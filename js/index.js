@@ -2,7 +2,8 @@
   const configuration = {
     CIRCLE_COLOR: "#FF0000",
     POINT_DIAMETER: 11,
-    CLICKED_POINT_COLOR: 'green'
+    CLICKED_POINT_COLOR: 'green',
+    RECTANGLE_COLOR: 'blue',
   }
 
   const CanvasElement = (function() {
@@ -39,6 +40,40 @@
     return CanvasElement
   })()
 
+  const Rectange = (function() {
+    'use strict';
+
+    class Rectangle {
+      context = null
+      color = ''
+      points = null
+
+      constructor({ points, color, context }) {
+        this.points = points
+        this.color = color
+        this.context = context
+      }
+
+      draw = () => {
+        this.context.beginPath()
+
+        this.context.moveTo(this.points.x, this.points.y)
+        for (let i = 0; i < this.points.length; i++) {
+          const curentPoint = this.points[i]
+
+          this.context.lineTo(curentPoint.x, curentPoint.y)
+        }
+
+        this.context.closePath()
+
+        this.context.strokeStyle = this.color
+        this.context.stroke()
+      }
+    }
+
+    return Rectangle
+  })()
+
   const Circle = (function() {
     'use strict';
 
@@ -54,10 +89,11 @@
       }
 
       draw = () => {
-        this.context.strokeStyle = this.color
-
         this.context.beginPath()
         this.context.arc(this.x, this.y, this.diameter, 0, 2 * Math.PI, false)
+        this.context.closePath()
+
+        this.context.strokeStyle = this.color
         this.context.lineWidth = 1
         this.context.stroke()
       }
@@ -154,6 +190,10 @@
           this.pointsArray.push(new Point({ x, y, context: this.context, color: configuration.CIRCLE_COLOR }))
         }
 
+        if (this.pointsArray.length >= 3 && (!this.circle || !this.rectangle)) {
+          this.setupElements()
+        }
+
         this.render()
       }
 
@@ -197,6 +237,17 @@
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
       }
 
+      setupElements = () => {
+        if (this.pointsArray.length >= 3) {
+          if (!this.circle) {
+          }
+
+          if (!this.rectangle) {
+            this.rectangle = new Rectange({ points: this.pointsArray, color: configuration.RECTANGLE_COLOR, context: this.context })
+          }
+        }
+      }
+
       render = () => {
         this.clearCanvas()
 
@@ -204,6 +255,10 @@
           const currentPoint = this.pointsArray[i]
 
           currentPoint.draw()
+        }
+
+        if (this.rectangle) {
+          this.rectangle.draw()
         }
       }
 
