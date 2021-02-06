@@ -2,7 +2,7 @@
   const configuration = {
     CIRCLE_COLOR: "#FF0000",
     POINT_DIAMETER: 11,
-    CLICKED_POINT_COLOR: 'yellow'
+    CLICKED_POINT_COLOR: 'green'
   }
 
   const CanvasElement = (function() {
@@ -21,7 +21,7 @@
         this.color = color
       }
 
-      changeCoords = (x, y) => {
+      setCoords = (x, y) => {
         this.x = x
         this.y = y
       }
@@ -95,6 +95,12 @@
         this.outerCircle.setColor(color)
       }
 
+      changeCoords = (x, y) => {
+        this.setCoords(x, y)
+
+        this.outerCircle.setCoords(x, y)
+      }
+
       isClickedInside = ({ x, y }) => {
         const currentRadius = configuration.POINT_DIAMETER
 
@@ -152,15 +158,23 @@
       }
 
       onMouseMove = (e) => {
-        if (this.draggingPoint) {}
+        if (this.draggingPoint) {
+          const [x, y] = [e.clientX, e.clientY];
+
+          this.draggingPoint.changeCoords(x, y)
+
+          this.render()
+        }
       }
 
       onMouseUp = () => {
-        this.draggingPoint.changeColor(configuration.CIRCLE_COLOR)
+        if (this.draggingPoint) {
+          this.draggingPoint.changeColor(configuration.CIRCLE_COLOR)
 
-        this.draggingPoint = null
+          this.draggingPoint = null
 
-        this.render()
+          this.render()
+        }
       }
 
       setListening = () => {
