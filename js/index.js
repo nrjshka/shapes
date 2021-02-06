@@ -152,6 +152,31 @@
     return Point
   })()
 
+  const MathCalculations = (function () {
+    const getCenterPoint = (A, B) => {
+      const x = (A.x + B.x) / 2;
+      const y = (A.y + B.y) / 2;
+
+      return {
+        x, y
+      };
+    }
+
+    const getFourthPoint = (A, B) => {
+      const x = 2 * B.x - A.x;
+      const y = 2 * B.y - A.y;
+
+      return {
+        x, y
+      };
+    }
+
+    return {
+      getCenterPoint,
+      getFourthPoint,
+    }
+  })()
+
   const App = (function () {
     'use strict';
     class App {
@@ -217,6 +242,15 @@
         }
       }
 
+      calculateFourthPointPosition = () => {
+        const [A, B, C] = this.pointsArray
+
+        const centerPoint = MathCalculations.getCenterPoint(A, C)
+        const D = MathCalculations.getFourthPoint(B, centerPoint)
+
+        return D
+      }
+
       setListening = () => {
         window.addEventListener('resize', () => {
           this.setCanvasSize()
@@ -243,7 +277,10 @@
           }
 
           if (!this.rectangle) {
-            this.rectangle = new Rectange({ points: this.pointsArray, color: configuration.RECTANGLE_COLOR, context: this.context })
+            const points = [...this.pointsArray, this.calculateFourthPointPosition()]
+            debugger
+
+            this.rectangle = new Rectange({ points, color: configuration.RECTANGLE_COLOR, context: this.context })
           }
         }
       }
@@ -264,6 +301,8 @@
 
       reset = () => {
         this.pointsArray = []
+        this.circle = null
+        this.rectangle = null
         this.draggingPoint = null
 
         this.clearCanvas()
