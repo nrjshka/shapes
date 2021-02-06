@@ -4,6 +4,7 @@
     POINT_DIAMETER: 11,
     CLICKED_POINT_COLOR: 'green',
     RECTANGLE_COLOR: 'blue',
+    CENTER_CIRCLE_COLOR: 'green',
   }
 
   const CanvasElement = (function() {
@@ -54,7 +55,7 @@
         this.context = context
       }
 
-      setPoint = (points) => this.points = points 
+      setPoint = (points) => this.points = points
 
       draw = () => {
         this.context.beginPath()
@@ -70,6 +71,20 @@
 
         this.context.strokeStyle = this.color
         this.context.stroke()
+      }
+
+      getArea = () => {
+        const dotsAr = this.points.map(({ x, y }) => [x, y]);
+        const resX = dotsAr.reduce((acc, cur, id, arr) => {
+          if (id === 1) acc = 0;
+          return acc + arr[id - 1][0] * cur[1];
+        });
+        const resY = dotsAr.reduce((acc, cur, id, arr) => {
+          if (id === 1) acc = 0;
+          return acc + arr[id - 1][1] * cur[0];
+        });
+
+        return Math.abs(resX - resY);
       }
     }
 
@@ -89,6 +104,8 @@
 
         this.diameter = diameter
       }
+
+      setDiameter = (diameter) => this.diameter = diameter
 
       draw = () => {
         this.context.beginPath()
@@ -173,9 +190,12 @@
       };
     }
 
+    const getRadiusCircle = (area) => Math.sqrt(area / Math.PI)
+
     return {
       getCenterPoint,
       getFourthPoint,
+      getRadiusCircle,
     }
   })()
 
@@ -276,15 +296,31 @@
 
       setElements = () => {
         if (this.pointsArray.length >= 3) {
-          if (!this.circle) {
-          }
-
           const points = [...this.pointsArray, this.calculateFourthPointPosition()]
 
           if (this.rectangle) {
             this.rectangle.setPoint(points)
           } else {
             this.rectangle = new Rectange({ points, color: configuration.RECTANGLE_COLOR, context: this.context })
+          }
+
+          const circleRadius = MathCalculations.getRadiusCircle(this.rectangle.getArea())
+
+          const [A, B, C] = this.pointsArray
+          const { x, y } = MathCalculations.getCenterPoint(A, C)
+
+          if (this.circle) {
+            this.circle.setCoords(x, y)
+            this.circle.setDiameter(circleRadius)
+          }
+          else {
+            this.circle = new Circle({
+              x,
+              y,
+              color: configuration.CENTER_CIRCLE_COLOR,
+              context: this.context,
+              diameter: circleRadius,
+            })
           }
         }
       }
@@ -300,6 +336,10 @@
 
         if (this.rectangle) {
           this.rectangle.draw()
+        }
+
+        if (this.circle) {
+          this.circle.draw()
         }
       }
 
