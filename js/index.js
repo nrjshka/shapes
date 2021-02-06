@@ -54,6 +54,8 @@
         this.context = context
       }
 
+      setPoint = (points) => this.points = points 
+
       draw = () => {
         this.context.beginPath()
 
@@ -216,7 +218,7 @@
         }
 
         if (this.pointsArray.length >= 3 && (!this.circle || !this.rectangle)) {
-          this.setupElements()
+          this.setElements()
         }
 
         this.render()
@@ -227,6 +229,7 @@
           const [x, y] = [e.clientX, e.clientY];
 
           this.draggingPoint.changeCoords(x, y)
+          this.setElements()
 
           this.render()
         }
@@ -271,15 +274,16 @@
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
       }
 
-      setupElements = () => {
+      setElements = () => {
         if (this.pointsArray.length >= 3) {
           if (!this.circle) {
           }
 
-          if (!this.rectangle) {
-            const points = [...this.pointsArray, this.calculateFourthPointPosition()]
-            debugger
+          const points = [...this.pointsArray, this.calculateFourthPointPosition()]
 
+          if (this.rectangle) {
+            this.rectangle.setPoint(points)
+          } else {
             this.rectangle = new Rectange({ points, color: configuration.RECTANGLE_COLOR, context: this.context })
           }
         }
