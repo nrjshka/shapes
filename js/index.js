@@ -1,33 +1,81 @@
 (function() {
-  const Point = (function() {
+  const configuration = {
+    CIRCLE_COLOR: "#FF0000",
+    POINT_DIAMETER: 11,
+  }
+
+  const CanvasElement = (function() {
     'use strict';
 
-    const CIRCLE_COLOR = "#FF0000"
-    const POINT_DIAMETER = 11
-
-    class Point {
+    class CanvasElement {
       context = null
+      color = ''
       x = 0
       y = 0
 
-      constructor(x, y, context) {
+      constructor({ x, y, context, color }) {
         this.x = x
         this.y = y
         this.context = context
+        this.color = color
+      }
+
+      changeCoords = (x, y) => {
+        this.x = x
+        this.y = y
+      }
+    }
+
+    return CanvasElement
+  })()
+
+  const Circle = (function() {
+    'use strict';
+
+    class Circle extends CanvasElement {
+      diameter = 0
+
+      constructor(initialValue) {
+        super(initialValue)
+
+        const { diameter } = initialValue
+
+        this.diameter = diameter
       }
 
       draw = () => {
-        this.context.strokeStyle = CIRCLE_COLOR
+        this.context.strokeStyle = this.color
+
+        this.context.beginPath()
+        this.context.arc(this.x, this.y, this.diameter, 0, 2 * Math.PI, false)
+        this.context.lineWidth = 1
+        this.context.stroke()
+      }
+    }
+
+    return Circle
+  })()
+
+  const Point = (function() {
+    'use strict';
+
+    class Point extends CanvasElement {
+      outerCircle = null
+
+      constructor(initialValue) {
+        super(initialValue)
+
+        this.outerCircle = new Circle({ ...initialValue, diameter: configuration.POINT_DIAMETER })
+      }
+
+      draw = () => {
+        this.outerCircle.draw()
+
+        this.context.strokeStyle = this.color
 
         // dot drawing
         this.context.beginPath()
         this.context.arc(this.x, this.y, 1, 0, 2 * Math.PI)
-        this.context.stroke()
-
-        // outer circle drawing
-        this.context.beginPath()
-        this.context.arc(this.x, this.y, POINT_DIAMETER, 0, 2 * Math.PI, false)
-        this.context.lineWidth = 1
         this.context.stroke()
       }
     }
@@ -63,7 +111,7 @@
           // сейчас научимся просто добавлять точки
           const [x, y] = [e.clientX, e.clientY];
 
-          this.pointsArray.push(new Point(x, y, this.context))
+          this.pointsArray.push(new Point({ x, y, context: this.context, color: configuration.CIRCLE_COLOR }))
 
           this.render()
         }
