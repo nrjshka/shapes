@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset=utf-8>
+
     <title>Shapes - Maxim Korolev</title>
 
     <link rel="stylesheet" type="text/css" href="styles/reset.css">
@@ -10,5 +11,21 @@
     <script defer type="application/javascript" src="js/index.js"></script>
   </head>
   <body>
+    <main class="main">
+      <canvas class="canvas"></canvas>
+      <button class="reset">Reset</button>
+    </main>
+
+    <!-- Info popup -->
+    <div class="popup popup--show" id="info-popup">
+      <button class="popup__close">Close</button>
+      <div>
+        Text
+      </div>
+    </div>
+
+    <footer class="footer">
+      <button class="info" id="info-button">Info</button>
+    </footer>
   </body>
 </html>

@@ -1,0 +1,80 @@
+html, body {
+  font-family: "Helvetica", Arial, sans-serif;
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+}
+
+.footer {
+  position: absolute;
+
+  left: 0;
+  bottom: 0;
+}
+
+/* Popup */
+
+.popup {
+  position: absolute;
+
+  z-index: 1;
+
+  width: 400px;
+
+  left: -400px;
+  bottom: 20px;
+
+  padding: 10px 30px 10px 20px;
+
+  transition: left .4s ease-out;
+
+  border: 1px solid #666;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background-color: #fff;
+
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.popup--shown {
+  left: 20px;
+  transition: left .4s ease-in;
+}
+
+.popup__close {
+  cursor: pointer;
+
+  position: absolute;
+
+  top: 5px;
+  right: 7px;
+
+  line-height: 10px;
+  font-size: 16px;
+}
+
+/* canvas */
+.canvas {
+  width: 100%;
+}
+
+.reset {
+  cursor: pointer;
+
+  position: absolute;
+
+  top: 20px;
+  right: 20px;
+}
+
+.info {
+  cursor: pointer;
+
+  position: absolute;
+
+  left: 20px;
+  bottom: 20px;
+}
