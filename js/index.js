@@ -5,6 +5,10 @@
     CLICKED_POINT_COLOR: 'green',
     RECTANGLE_COLOR: 'blue',
     CENTER_CIRCLE_COLOR: 'green',
+    FONT: {
+      COLOR: 'black',
+      STYLE: '12px Arial',
+    },
   }
 
   const MathCalculations = (function () {
@@ -102,14 +106,24 @@
 
         this.context.strokeStyle = this.color
         this.context.stroke()
+
+        // Text
+        this.context.strokeStyle = configuration.FONT.COLOR
+        this.context.font = configuration.FONT.STYLE
+
+        const { x, y } = this.getCenter()
+        this.context.strokeText(`${x}, ${y}`, x, y)
+        this.context.strokeText(`Area is: ${this.getArea()}`, x, y + 15)
       }
 
       getArea = () => {
         const AB = MathCalculations.getVector(this.points[0], this.points[1])
         const AC = MathCalculations.getVector(this.points[0], this.points[2])
 
-        return Math.abs((AB.x * AC.y) - (AB.y * AC.x))
+        return Math.round(Math.abs((AB.x * AC.y) - (AB.y * AC.x)))
       }
+
+      getCenter = () => MathCalculations.getCenterPoint(this.points[0], this.points[2])
     }
 
     return Rectangle
@@ -166,6 +180,13 @@
         this.context.beginPath()
         this.context.arc(this.x, this.y, 1, 0, 2 * Math.PI)
         this.context.stroke()
+
+        // Text
+        const textOffset = configuration.POINT_DIAMETER
+
+        this.context.strokeStyle = configuration.FONT.COLOR
+        this.context.font = configuration.FONT.STYLE
+        this.context.strokeText(`${this.x}, ${this.y}`, this.x + textOffset, this.y + textOffset)
       }
 
       changeColor = (color) => {
@@ -301,9 +322,7 @@
           }
 
           const circleRadius = MathCalculations.getRadiusCircle(this.rectangle.getArea())
-
-          const [A, B, C] = this.pointsArray
-          const { x, y } = MathCalculations.getCenterPoint(A, C)
+          const { x, y } = this.rectangle.getCenter()
 
           if (this.circle) {
             this.circle.setCoords(x, y)
