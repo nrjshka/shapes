@@ -17,6 +17,8 @@
   }
 
   const MathCalculations = (function () {
+    'use strict';
+
     const getCenterPoint = (A, B) => {
       const x = (A.x + B.x) / 2;
       const y = (A.y + B.y) / 2;
@@ -148,6 +150,7 @@
     const {
       CanvasElement,
     } = props
+
     class Circle extends CanvasElement {
       diameter = 0
 
@@ -253,6 +256,7 @@
       Rectange,
       configuration,
     } = props
+
     class App {
       canvas = null
       context = null
@@ -362,8 +366,7 @@
           if (this.circle) {
             this.circle.setCoords(x, y)
             this.circle.setDiameter(circleRadius)
-          }
-          else {
+          } else {
             this.circle = new Circle({
               x,
               y,
