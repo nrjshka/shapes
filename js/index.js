@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   const configuration = {
     CIRCLE_COLOR: "#FF0000",
     POINT_DIAMETER: 11,
@@ -76,8 +78,13 @@
     return CanvasElement
   })()
 
-  const Rectange = (function() {
+  const Rectange = (function(props) {
     'use strict';
+
+    const {
+      MathCalculations,
+      configuration,
+    } = props
 
     class Rectangle {
       context = null
@@ -127,11 +134,17 @@
     }
 
     return Rectangle
-  })()
+  })({
+    MathCalculations,
+    configuration,
+  })
 
-  const Circle = (function() {
+  const Circle = (function(props) {
     'use strict';
 
+    const {
+      CanvasElement,
+    } = props
     class Circle extends CanvasElement {
       diameter = 0
 
@@ -157,10 +170,18 @@
     }
 
     return Circle
-  })()
+  })({
+    CanvasElement,
+  })
 
-  const Point = (function() {
+  const Point = (function(props) {
     'use strict';
+
+    const {
+      CanvasElement,
+      Circle,
+      configuration,
+    } = props
 
     class Point extends CanvasElement {
       outerCircle = null
@@ -214,10 +235,21 @@
     }
 
     return Point
-  })()
+  })({
+    CanvasElement,
+    Circle,
+    configuration,
+  })
 
-  const App = (function () {
+  const App = (function (props) {
     'use strict';
+
+    const {
+      Point,
+      Circle,
+      Rectange,
+      configuration,
+    } = props
     class App {
       canvas = null
       context = null
@@ -369,7 +401,12 @@
     }
 
     return App
-  })()
+  })({
+    Point,
+    Circle,
+    Rectange,
+    configuration,
+  })
 
   const canvasNode = document.querySelector('#shapesCanvas')
   const resetButton = document.querySelector('#reset-button')
