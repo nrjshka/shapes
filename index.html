@@ -2,8 +2,12 @@
 <html>
   <head>
     <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Shapes - Maxim Korolev</title>
+    <meta name="description" content="Here is a simple javascript program. You can click on 3 points and the program will use them to build a correct parallelogram and a circle in the center. The area of the circle is equal to the area of the parallelogram. You can drag the points and also click on the 'reset' button if you want to start over.">
+    <meta name=":author" content="Max Korolev">
+
+    <title>Shapes - Max Korolev</title>
 
     <link rel="stylesheet" type="text/css" href="styles/reset.css">
     <link rel="stylesheet" type="text/css" href="styles/index.css">
@@ -17,10 +21,27 @@
     </main>
 
     <!-- Info popup -->
-    <div class="popup popup--show" id="info-popup">
-      <button class="popup__close">Close</button>
+    <div class="popup" id="info-popup">
+      <button class="popup__close btn" id="info-popup__close-button">Close</button>
       <div>
-        Text
+        <b>About program:</b><br />
+        Here is a simple javascript program.<br />
+        You can click on 3 points and the program will use them to build a correct parallelogram and a circle in the center.<br />
+        The area of the circle is equal to the area of the parallelogram.<br />
+        You can drag the points and also click on the "reset" button if you want to start over.<br />
+        <br />
+        <b>About author:</b><br />
+        Hi, my name is Max!<br />
+        I am frontend developer.<br />
+        You can contact me:<br />
+        <ol class="popup__list">
+          <li class="popup__list-links">
+            <a href="https://www.linkedin.com/in/nrjshka/">My LinkedIn</a>
+          </li>
+          <li class="popup__list-links">
+            <a href="mailto:nrjshka@gmail.com">My email</a>
+          </li>
+        </ol>
       </div>
     </div>
 

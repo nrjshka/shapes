@@ -9,7 +9,10 @@
     CENTER_CIRCLE_COLOR: 'green',
     FONT: {
       COLOR: 'black',
-      STYLE: '12px Arial',
+      STYLE: 'normal 12px Arial',
+    },
+    POPUP: {
+      SHOWN_CLASSNAME: 'popup--shown',
     },
   }
 
@@ -408,12 +411,25 @@
     configuration,
   })
 
+  function infoPopupClick() {
+    const infoPopup = document.querySelector('#info-popup')
+
+    if (infoPopup.classList.contains(configuration.POPUP.SHOWN_CLASSNAME)) {
+      infoPopup.classList.remove(configuration.POPUP.SHOWN_CLASSNAME)
+    } else {
+      infoPopup.classList.add(configuration.POPUP.SHOWN_CLASSNAME)
+    }
+  }
+
   const canvasNode = document.querySelector('#shapesCanvas')
   const resetButton = document.querySelector('#reset-button')
   const infoButton = document.querySelector('#info-button')
+  const infoPopupClose = document.querySelector('#info-popup__close-button')
 
   // running app
   const app = new App(canvasNode)
 
   resetButton.addEventListener('click', app.reset)
+  infoButton.addEventListener('click', infoPopupClick)
+  infoPopupClose.addEventListener('click', infoPopupClick)
 })()
