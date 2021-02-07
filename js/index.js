@@ -7,6 +7,37 @@
     CENTER_CIRCLE_COLOR: 'green',
   }
 
+  const MathCalculations = (function () {
+    const getCenterPoint = (A, B) => {
+      const x = (A.x + B.x) / 2;
+      const y = (A.y + B.y) / 2;
+
+      return {
+        x, y
+      };
+    }
+
+    const getFourthPoint = (A, B) => {
+      const x = 2 * B.x - A.x;
+      const y = 2 * B.y - A.y;
+
+      return {
+        x, y
+      };
+    }
+
+    const getRadiusCircle = (area) => Math.sqrt(area / Math.PI)
+
+    const getVector = (A, B) => ({ x: B.x - A.x, y: B.y - A.y })
+
+    return {
+      getCenterPoint,
+      getFourthPoint,
+      getRadiusCircle,
+      getVector,
+    }
+  })()
+
   const CanvasElement = (function() {
     'use strict';
 
@@ -74,17 +105,10 @@
       }
 
       getArea = () => {
-        const dotsAr = this.points.map(({ x, y }) => [x, y]);
-        const resX = dotsAr.reduce((acc, cur, id, arr) => {
-          if (id === 1) acc = 0;
-          return acc + arr[id - 1][0] * cur[1];
-        });
-        const resY = dotsAr.reduce((acc, cur, id, arr) => {
-          if (id === 1) acc = 0;
-          return acc + arr[id - 1][1] * cur[0];
-        });
+        const AB = MathCalculations.getVector(this.points[0], this.points[1])
+        const AC = MathCalculations.getVector(this.points[0], this.points[2])
 
-        return Math.abs(resX - resY);
+        return Math.abs((AB.x * AC.y) - (AB.y * AC.x))
       }
     }
 
@@ -169,34 +193,6 @@
     }
 
     return Point
-  })()
-
-  const MathCalculations = (function () {
-    const getCenterPoint = (A, B) => {
-      const x = (A.x + B.x) / 2;
-      const y = (A.y + B.y) / 2;
-
-      return {
-        x, y
-      };
-    }
-
-    const getFourthPoint = (A, B) => {
-      const x = 2 * B.x - A.x;
-      const y = 2 * B.y - A.y;
-
-      return {
-        x, y
-      };
-    }
-
-    const getRadiusCircle = (area) => Math.sqrt(area / Math.PI)
-
-    return {
-      getCenterPoint,
-      getFourthPoint,
-      getRadiusCircle,
-    }
   })()
 
   const App = (function () {
